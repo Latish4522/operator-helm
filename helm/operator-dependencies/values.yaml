@@ -24,7 +24,7 @@ argo-events:
 events:
   nats:
     # URL should point to the nats-leaf service
-    url: nats://CORE_TOKEN_123@nats-leaf.nats-leaf.svc.cluster.local:4222
+    url: nats://CORE_TOKEN_123@nats-leaf.nats.svc.cluster.local:4222
     subject: test.leaf
     queue: argo
   sensor:
