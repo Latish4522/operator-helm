@@ -4,6 +4,8 @@ metadata:
   name: nats-workflow-sensor
   namespace: argo-events
 spec:
+  template:
+    serviceAccountName: {{ .Values.rbac.serviceAccountName }}
   eventBusName: default
   dependencies:
     - name: nats-msg
