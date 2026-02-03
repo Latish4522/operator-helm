@@ -1,0 +1,15 @@
+apiVersion: v2
+name: nats-argo-umbrella
+description: A Helm umbrella chart for NATS Leaf Node and Argo Events components.
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+dependencies:
+  - name: nats
+    version: 1.2.x
+    repository: https://nats-io.github.io/k8s/helm/charts/
+    alias: nats-leaf
+  - name: argo-events
+    version: 2.4.x
+    repository: https://argoproj.github.io/argo-helm

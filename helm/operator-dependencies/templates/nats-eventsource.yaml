@@ -1,0 +1,12 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: nats-leaf
+  namespace: argo-events
+spec:
+  eventBusName: default
+  nats:
+    demo:
+      url: {{ .Values.events.nats.url }}
+      subject: {{ .Values.events.nats.subject }}
+      queue: {{ .Values.events.nats.queue }}

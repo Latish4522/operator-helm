@@ -1,0 +1,9 @@
+dependencies:
+- name: nats
+  repository: https://nats-io.github.io/k8s/helm/charts/
+  version: 1.2.11
+- name: argo-events
+  repository: https://argoproj.github.io/argo-helm
+  version: 2.4.20
+digest: sha256:7bec14d167d522d7899e3d88545086606682ce2a981ec4572216a7435ea035c0
+generated: "2026-02-03T10:52:58.9582237+05:30"

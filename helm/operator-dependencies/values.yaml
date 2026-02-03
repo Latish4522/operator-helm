@@ -1,0 +1,37 @@
+# Default values for nats-argo-umbrella.
+
+# Configuration for NATS Leaf Node
+nats-leaf:
+  fullnameOverride: nats-leaf
+  enabled: true
+  config:
+    merge:
+      leafnodes:
+        remotes:
+          - url: nats://CORE_TOKEN_123@aa120575a351f423c8f07331972fe327-1558241757.us-east-2.elb.amazonaws.com:7422
+  service:
+    type: ClusterIP
+
+# Configuration for Argo Events
+argo-events:
+  fullnameOverride: argo-events
+  namespaceOverride: argo-events
+  enabled: true
+  crds:
+    install: false
+
+# Parameters for EventSource and Sensor
+events:
+  nats:
+    # URL should point to the nats-leaf service
+    url: nats://CORE_TOKEN_123@nats-leaf.nats-leaf.svc.cluster.local:4222
+    subject: test.leaf
+    queue: argo
+  sensor:
+    workflowNamespace: operator
+    serviceAccountName: argo-workflow
+
+# RBAC Configuration
+rbac:
+  namespace: default
+  serviceAccountName: operator-service-account

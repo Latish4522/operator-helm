@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: nats-workflow-sensor
+  namespace: argo-events
+spec:
+  eventBusName: default
+  dependencies:
+    - name: nats-msg
+      eventSourceName: nats-leaf
+      eventName: demo
+  triggers:
+    - template:
+        name: trigger-build-workflow
+        k8s:
+          operation: create
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: trigger-build-
+                namespace: {{ .Values.events.sensor.workflowNamespace }}
+              spec:
+                serviceAccountName: {{ .Values.events.sensor.serviceAccountName }}
+                entrypoint: main
+                arguments:
+                  parameters:
+                    - name: rawPayload
+                      value: ""
+                templates:
+                  - name: main
+                    inputs:
+                      parameters:
+                        - name: rawPayload
+                    container:
+                      image: clappit/operator:latest
+                      imagePullPolicy: Always
+                      command: ["/bin/sh", "-c"]
+                      args:
+                        - |
+                          echo '{{`{{inputs.parameters.rawPayload}}`}}' \
+                          | dotnet Operator.Api.dll
+          parameters:
+            - src:
+                dependencyName: nats-msg
+                dataTemplate: "{{`{{ .Input.body | b64dec }}`}}"
+              dest: spec.arguments.parameters.0.value
